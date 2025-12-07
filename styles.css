@@ -1,0 +1,251 @@
+/* Theme / Variables */
+:root {
+  /* Reused color tokens from site `style.css` */
+  --bg: #484a4d;            /* dark page background */
+  --card: #ffffff;          /* white cards */
+  --accent: #1a73e8;       /* primary blue */
+  --accent-strong: #155ab6;/* darker blue */
+  --heading-blue: #1a237e; /* deep heading blue */
+  --success: #2ecc71;
+  --error: #e74c3c;
+  --muted: #bfc3c6;        /* light muted on dark bg */
+  --text: #1f2937;         /* primary text for cards */
+  --radius: 10px;
+  --shadow: 0 10px 30px rgba(0,0,0,0.25);
+  --container-width: 420px;
+  --gap: 14px;
+}
+
+/* Reset / base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: #eef2f5; /* light page text on dark background */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Layout / Page */
+body {
+  padding: 28px 24px;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+  margin-bottom: 22px;
+  padding: 8px 12px;
+}
+
+.page-header h1 {
+  font-size: 1.25rem;
+  margin: 0;
+  color: var(--card); /* white-ish with contrast */
+  letter-spacing: 0.2px;
+}
+
+/* Admin controls (outside login container) */
+.admin-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Small helper text */
+.tiny {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/*  Buttons / Controls */
+.link-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.06);
+  color: var(--card);
+  cursor: pointer;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font: inherit;
+}
+
+.link-btn:hover,
+.link-btn:focus {
+  background: rgba(43, 108, 176, 0.08);
+  outline: none;
+}
+
+/* Primary submit button */
+button[type="submit"] {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+  box-shadow: 0 6px 18px rgba(26,115,232,0.15);
+}
+
+button[type="submit"]:hover,
+button[type="submit"]:active {
+  opacity: 0.95;
+}
+
+/* Display name / center */
+.display-name {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 6px 0 12px;
+  padding-left: 4px;
+  color: var(--card);
+}
+
+/* Center container */
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 160px);
+}
+
+/* Card / Form */
+.card {
+  width: var(--container-width);
+  background: var(--card);
+  padding: 22px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  color: var(--text);
+}
+
+.card h2 {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+}
+
+/* Form layout */
+label {
+  display: block;
+  margin: 10px 0 6px;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+label.inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 10px;
+}
+
+/* Inputs */
+input[type="text"],
+input[type="password"],
+input[type="number"],
+select, input[type="email"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e6e9ed;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background: #fff;
+  color: var(--text);
+}
+
+input[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+/* center the primary action(s) inside the form */
+.center-actions {
+  display: flex;
+  justify-content: center;
+}
+
+/* signup prompt below the button */
+.signup-prompt {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 0.95rem;
+}
+.signup-prompt a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.signup-prompt a:hover { text-decoration: underline; }
+
+/* signup box (inline) */
+.signup-box {
+  margin-top: 12px;
+  border-top: 1px dashed rgba(0,0,0,0.06);
+  padding-top: 12px;
+}
+
+/*  Messages / Utilities */
+.form-msg {
+  margin-top: 10px;
+  font-size: 0.95rem;
+}
+
+.form-msg.success {
+  color: var(--success);
+}
+
+.form-msg.error {
+  color: var(--error);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: 0.85rem;
+}
+
+/* Tiny success / error shown near admin controls */
+.admin-controls .tiny.success {
+  color: var(--success);
+}
+
+.admin-controls .tiny.error {
+  color: var(--error);
+}
+
+/* Responsive tweaks */
+@media (max-width: 720px) {
+  :root {
+    --container-width: calc(100% - 48px);
+  }
+  body {
+    padding: 18px;
+  }
+  .page-header {
+    gap: 8px;
+  }
+  .center { min-height: calc(100vh - 120px); }
+}
+
+@media (max-width: 420px) {
+  .page-header h1 { font-size: 1.05rem }
+}
+
+/* End of file */

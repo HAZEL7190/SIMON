@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Scholarships</title>
+  <style>
+    /* ====== Global Styles ====== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background-color: #f4f8ff;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 20px;
+    }
+
+    .container {
+      background: #fff;
+      width: 100%;
+      max-width: 1000px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    header {
+      background: linear-gradient(135deg, #007bff, #1e90ff);
+      color: white;
+      text-align: center;
+      padding: 25px;
+    }
+
+    header h1 {
+      font-size: 1.9rem;
+      font-weight: 600;
+    }
+
+    .content {
+      padding: 30px;
+    }
+
+    /* ===== Category Section ===== */
+    .school-section {
+      margin-bottom: 40px;
+    }
+
+    .school-title {
+      font-size: 1.4rem;
+      color: #0056b3;
+      border-left: 5px solid #007bff;
+      padding-left: 10px;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    /* ===== Scholarship Card ===== */
+    .scholarship-card {
+      background: #f9fcff;
+      border: 1px solid #d7e7ff;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .scholarship-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0, 123, 255, 0.15);
+    }
+
+    .scholarship-title {
+      font-size: 1.2rem;
+      color: #0056b3;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .scholarship-details {
+      font-size: 0.95rem;
+      color: #444;
+      line-height: 1.6;
+    }
+
+    .deadline {
+      margin-top: 6px;
+      font-size: 0.9rem;
+      color: #007bff;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background-color: #f1f6ff;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.5rem;
+      }
+      .scholarship-card {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>Available Scholarships</h1>
+    </header>
+
+    <div class="content">
+      
+      <!-- SCHOOL OF ENGINEERING -->
+      <section class="school-section">
+        <h2 class="school-title">🏗️ School of Engineering</h2>
+
+        <div class="scholarship-card">
+          <h3 class="scholarship-title">Innovation & Technology Scholarship</h3>
+          <p class="scholarship-details">
+            Supports students who are passionate about creating innovative engineering solutions. 
+            Applicants must demonstrate creativity, problem-solving ability, and technical excellence.
+          </p>
+          <p>
+            Min GPA: 2.8
+          </p>
+          <p class="deadline"><strong>Deadline:</strong> February 20, 2026</p>
+        </div>
+
+        <div class="scholarship-card">
+          <h3 class="scholarship-title">Future Builders Award</h3>
+          <p class="scholarship-details">
+            Designed for civil and mechanical engineering students who have shown strong academic 
+            performance and interest in infrastructure development and sustainable design.
+          </p>
+
+          <p>
+            Min GPA: 2.8
+          </p>
+          <p class="deadline"><strong>Deadline:</strong> January 15, 2026</p>
+        </div>
+      </section>
+
+      <!-- SCHOOL OF SCIENCE -->
+      <section class="school-section">
+        <h2 class="school-title">🔬 School of Science</h2>
+
+        <div class="scholarship-card">
+          <h3 class="scholarship-title">Blue Future Foundation Scholarship</h3>
+          <p class="scholarship-details">
+            For students studying Environmental Science or related fields who show leadership 
+            in sustainability and conservation efforts.
+          </p>
+            
+          <p>
+            Min GPA: 2.8
+          </p>
+          <p class="deadline"><strong>Deadline:</strong> December 15, 2025</p>
+        </div>
+
+        <div class="scholarship-card">
+          <h3 class="scholarship-title">STEM Innovators Grant</h3>
+          <p class="scholarship-details">
+            Supports students in Science, Technology, Engineering, or Mathematics who demonstrate 
+            innovative research or project work.
+          </p>
+            
+          <p>
+            Min GPA: 2.8
+          </p>
+
+          <p class="deadline"><strong>Deadline:</strong> January 20, 2026</p>
+        </div>
+      </section>
+
+      <!-- SCHOOL OF BUSINESS -->
+      <section class="school-section">
+        <h2 class="school-title">💼 School of Business</h2>
+
+        <div class="scholarship-card">
+          <h3 class="scholarship-title">Entrepreneurial Minds Scholarship</h3>
+          <p class="scholarship-details">
+            Awarded to students who have shown initiative in business startups, social enterprises, 
+            or innovative financial projects.
+          </p>
+
+          <p>
+            Min GPA: 2.8
+          </p>
+          <p class="deadline"><strong>Deadline:</strong> March 10, 2026</p>
+        </div>
+
+        <div class="scholarship-card">
+          <h3 class="scholarship-title">Future Leaders in Business Award</h3>
+          <p class="scholarship-details">
+            Recognizes top business students with strong leadership, teamwork, and strategic thinking skills.
+          </p>
+
+          <p>
+            Min GPA: 2.8
+          </p>
+          <p class="deadline"><strong>Deadline:</strong> April 1, 2026</p>
+        </div>
+      </section>
+
+      <!-- SCHOOL OF HUMANITIES -->
+      <section class="school-section">
+        <h2 class="school-title">📚 School of Humanities</h2>
+
+        <div class="scholarship-card">
+          <h3 class="scholarship-title">Global Leaders Scholarship</h3>
+          <p class="scholarship-details">
+            Offered to students showing exceptional leadership and community engagement, 
+            particularly in social justice or global affairs.
+          </p>
+
+          <p>
+            Min GPA: 2.8
+          </p>
+          <p class="deadline"><strong>Deadline:</strong> March 5, 2026</p>
+        </div>
+
+        <div class="scholarship-card">
+          <h3 class="scholarship-title">Creative Minds Award</h3>
+          <p class="scholarship-details">
+            Supports students pursuing Arts, Literature, or Media Studies who demonstrate creativity 
+            and impact through their work.
+          </p>
+
+          <p>
+            Min GPA: 2.8
+          </p>
+          <p class="deadline"><strong>Deadline:</strong> February 10, 2026</p>
+        </div>
+      </section>
+
+      <!-- SCHOOL OF COMPUTING & IT -->
+      <section class="school-section">
+        <h2 class="school-title">💻 School of Computing & IT</h2>
+
+        <div class="scholarship-card">
+          <h3 class="scholarship-title">Tech Innovators Scholarship</h3>
+          <p class="scholarship-details">
+            Designed for Computer Science and IT students who have developed or contributed to 
+            impactful technology solutions or apps.
+          </p>
+
+          <p>
+            Min GPA: 2.8
+          </p>
+          <p class="deadline"><strong>Deadline:</strong> January 25, 2026</p>
+        </div>
+
+        <div class="scholarship-card">
+          <h3 class="scholarship-title">AI Excellence Award</h3>
+          <p class="scholarship-details">
+            Honors students specializing in Artificial Intelligence or Data Science who have shown 
+            exceptional academic and research excellence.
+          </p>
+          
+          <p>
+            Min GPA: 2.8
+          </p>
+          <p class="deadline"><strong>Deadline:</strong> March 12, 2026</p>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      © 2025 Scholarship Portal — All Rights Reserved.
+    </footer>
+  </div>
+</body>
+</html>

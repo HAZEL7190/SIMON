@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Eligibility Portal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="page-header">
+
+  </header>
+
+  <main class="center">
+    <section class="card" aria-labelledby="signupHeading">
+      <h2 id="signupHeading">Create your student account</h2>
+      
+      <form id="signupForm" autocomplete="off" novalidate>
+        <label for="fullName">Full name</label>
+        <input id="fullName" name="fullName" type="text" placeholder="fullName" required />
+
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="you@example.edu" required />
+        <small class="muted">personal email.</small>
+
+        <label for="studentId">Student ID</label>
+        <input id="studentId" name="studentId" type="text" placeholder="SIN" required />
+        <small class="muted">Enter the ID (no spaces).</small>
+
+        <label for="password">Choose a password</label>
+        <input id="password" name="password" type="password" placeholder="At least 6 characters" required />
+
+        <label for="confirmPassword">Confirm password</label>
+        <input id="confirmPassword" name="confirmPassword" type="password" placeholder="Repeat your password" required />
+  <style>
+    /* Consistent label/input layout for signup form */
+    #signupForm label {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+    #signupForm input[type="text"],
+    #signupForm input[type="email"],
+    #signupForm input[type="password"] {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px;
+      margin-bottom: 6px;
+      border: 1px solid #bbb;
+      border-radius: 5px;
+      font-size: 1rem;
+      background: #f9f9fa;
+      transition: border 0.2s;
+    }
+    #signupForm input[type="text"]:focus,
+    #signupForm input[type="email"]:focus,
+    #signupForm input[type="password"]:focus {
+      border: 1.5px solid #155ab6;
+      outline: none;
+    }
+    #signupForm small.muted {
+      display: block;
+      margin-bottom: 10px;
+      color: #888;
+      font-size: 0.92em;
+    }
+  </style>
+
+        <div class="actions center-actions" style="margin-top:14px">
+          <button id="createAccount" type="submit">Create account</button>
+        </div>
+
+        <div id="signupMsg" class="form-msg" aria-live="polite"></div>
+
+        <p class="signup-prompt" style="margin-top:12px">
+          Already have an account? <a id="toLogin" href="login.html">Log in</a>
+        </p>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    // client-side behavior: friendly messages, light validation, send to signup.php
+    (function(){
+      const fullNameEl = document.getElementById('fullName');
+      const emailEl = document.getElementById('email');
+      const studentIdEl = document.getElementById('studentId');
+      const passwordEl = document.getElementById('password');
+      const confirmEl = document.getElementById('confirmPassword');
+      const signupMsg = document.getElementById('signupMsg');
+      const signupForm = document.getElementById('signupForm');
+
+      // optional live preview element; attach listener only if element exists
+      const displayName = document.getElementById('displayName');
+      if (displayName && fullNameEl) {
+        fullNameEl.addEventListener('input', () => {
+          const v = fullNameEl.value.trim();
+          displayName.textContent = v ? `Hello, ${v.split(' ')[0]}` : 'Welcome, there';
+        });
+      }
+
+      function passwordStrength(pw) {
+        let score = 0;
+        if (pw.length >= 6) score++;
+        if (/[A-Z]/.test(pw)) score++;
+        if (/[0-9]/.test(pw)) score++;
+        if (/[^A-Za-z0-9]/.test(pw)) score++;
+        return score;
+      }
+
+      signupForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        signupMsg.textContent = '';
+        signupMsg.className = 'form-msg';
+
+        const name = fullNameEl.value.trim();
+        const email = emailEl.value.trim();
+        const student_id = studentIdEl.value.trim();
+        const password = passwordEl.value;
+        const confirm = confirmEl.value;
+
+        if (!name || !email || !student_id || !password || !confirm) {
+          signupMsg.className = 'form-msg error';
+          signupMsg.textContent = 'Please fill out all fields.';
+          return;
+        }
+
+        if (!/^\S+@\S+\.\S+$/.test(email)) {
+          signupMsg.className = 'form-msg error';
+          signupMsg.textContent = 'Please provide a valid email address.';
+          return;
+        }
+
+        if (password !== confirm) {
+          signupMsg.className = 'form-msg error';
+          signupMsg.textContent = 'Passwords do not match.';
+          return;
+        }
+
+        if (password.length < 6) {
+          signupMsg.className = 'form-msg error';
+          signupMsg.textContent = 'Choose a password that is at least 6 characters.';
+          return;
+        }
+
+        const strength = passwordStrength(password);
+        if (strength < 2) {
+          signupMsg.className = 'form-msg error';
+          signupMsg.textContent = 'Try a stronger password (mix letters, numbers, symbols).';
+          return;
+        }
+
+        signupMsg.textContent = 'Creating your account…';
+
+        try {
+          const resp = await fetch('signup.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, student_id, password })
+          });
+          const json = await resp.json();
+          if (json.success) {
+            localStorage.setItem('signupName', json.name);
+            signupMsg.className = 'form-msg success';
+            signupMsg.textContent = json.message || 'Account created — redirecting to login…';
+            setTimeout(() => { window.location.href = 'login.html'; }, 800);
+          } else {
+            signupMsg.className = 'form-msg error';
+            signupMsg.textContent = json.message || 'Could not create account.';
+          }
+        } catch (err) {
+          signupMsg.className = 'form-msg error';
+          signupMsg.textContent = 'Server error. Try again later.';
+        }
+      });
+
+      // keep link behavior — it navigates to login.html
+      const toLoginLink = document.getElementById('toLogin');
+      if (toLoginLink) toLoginLink.addEventListener('click', () => {});
+    })();
+  </script>

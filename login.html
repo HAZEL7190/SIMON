@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Log in - Scholarship Eligibility Checker</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <div class="login-wrapper">
+    <div class="login-left">
+      <h1>Scholarship Eligibility Checker</h1>
+      <p>Find out which scholarships you're eligible for fast and easy.
+         Sign in to get started.
+      </p>
+    </div>
+
+    <div class="login-right">
+      <div class="login-card" role="region" aria-label="Log in">
+        <div id="loginMsg" class="form-msg" aria-live="polite" style="text-align:left;margin-bottom:8px;display:none"></div>
+        <form action="login.php" method="post" class="login-form">
+          <label class="sr-only" for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="Email address" required>
+
+          <label class="sr-only" for="password">Password</label>
+          <input id="password" name="password" type="password" placeholder="Password" required>
+
+          <button type="submit" class="login-btn">Log In</button>
+
+        </form>
+
+        <div class="divider" aria-hidden="true"></div>
+
+        <a href="signup.html" class="create-account">Create New Account</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // small convenience: focus email on load
+    document.getElementById('email')?.focus();
+
+    // show server-side error passed via ?error= message
+    (function(){
+      function getQueryParam(name){
+        const params = new URLSearchParams(window.location.search);
+        return params.get(name);
+      }
+      const err = getQueryParam('error');
+      if (err){
+        const msg = decodeURIComponent(err);
+        const el = document.getElementById('loginMsg');
+        el.textContent = msg;
+        el.className = 'form-msg error';
+        el.style.display = 'block';
+        // remove error from URL to avoid repeat on refresh
+        if (window.history && window.history.replaceState) {
+          const url = new URL(window.location);
+          url.searchParams.delete('error');
+          window.history.replaceState({}, document.title, url.toString());
+        }
+      }
+    })();
+  </script>
+</body>
+</html>

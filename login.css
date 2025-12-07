@@ -1,0 +1,109 @@
+/* Styles for the Facebook-like login page, using color tokens from style.css */
+
+:root{
+  --bg: #484a4d;       /* body background from style.css */
+  --accent-blue: #1a73e8; /* primary CTA */
+  --accent-blue-dark: #155ab6;
+  --heading-blue: #1a237e; /* hero heading color */
+  --card-muted: rgba(180,173,173,0.77); /* action-card color */
+}
+
+html,body{height:100%;}
+body{
+  background: var(--bg);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin:0;
+  color:#222;
+}
+
+.login-wrapper{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:32px;
+  padding:40px 6%;
+  min-height:100vh;
+  box-sizing:border-box;
+}
+
+.login-left{
+  flex:1.2;
+  color:white;
+  max-width:55%;
+}
+.login-left h1{
+  color:var(--heading-blue);
+  font-size:48px;
+  margin:0 0 16px 0;
+  line-height:1.05;
+}
+.login-left p{
+  color:#e7e7e7;
+  font-size:20px;
+  margin:0;
+}
+
+.login-right{
+  width:380px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.login-card{
+  width:100%;
+  background: #fff;
+  border-radius:8px;
+  padding:18px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.2);
+  text-align:center;
+}
+
+.login-form{display:flex;flex-direction:column;gap:10px;padding:6px 8px}
+.login-form input{
+  padding:12px 14px;
+  border-radius:6px;
+  border:1px solid #ddd;
+  font-size:15px;
+  outline:none;
+}
+.login-form input:focus{box-shadow:0 0 0 3px rgba(26,115,232,0.12);border-color:var(--accent-blue)}
+
+.login-btn{
+  background:var(--accent-blue);
+  color:#fff;
+  border:none;
+  padding:12px 16px;
+  border-radius:6px;
+  font-weight:600;
+  font-size:16px;
+  cursor:pointer;
+}
+.login-btn:hover{background:var(--accent-blue-dark)}
+
+.login-links{margin-top:6px}
+.forgot{color:var(--heading-blue);font-size:13px;text-decoration:none}
+
+.divider{height:1px;background:transparent;margin:16px 0}
+.create-account{
+  display:inline-block;
+  background:var(--heading-blue);
+  color:white;
+  padding:10px 16px;
+  border-radius:6px;
+  text-decoration:none;
+  font-weight:700;
+}
+.create-account:hover{background:var(--accent-blue)}
+
+.small.muted{color:#ddd;font-size:13px;margin-top:12px;text-align:center}
+
+/* Small screens: stack columns */
+@media (max-width:900px){
+  .login-wrapper{flex-direction:column;align-items:center;padding:28px}
+  .login-left{max-width:100%;text-align:center}
+  .login-left h1{font-size:34px}
+  .login-right{width:100%;max-width:420px}
+}
+
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}

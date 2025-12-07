@@ -1,0 +1,117 @@
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #484a4d;
+    color: #333;
+    scroll-behavior: smooth;
+}
+
+/* Hero Banner */
+.hero-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #141414d5;
+    padding: 60px 10%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap;
+}
+
+.hero-content {
+    max-width: 50%;
+    min-width: 280px;
+}
+
+.hero-content h1 {
+    font-size: 2.5em;
+    margin-bottom: 15px;
+    color: #4c529b;
+}
+
+.hero-content p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #555;
+}
+
+.hero-image-container {
+    max-width: 50%;
+    min-width: 350px;
+}
+
+.hero-image {
+    width: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+/* Action Section */
+.action-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding: 60px 10%;
+}
+
+.action-card {
+    background-color: #b4adadc4;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+    padding: 30px 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-content h2 {
+    color: #293292;
+    margin-bottom: 10px;
+}
+
+.card-content p {
+    color: #555;
+    font-size: 0.95em;
+    margin-bottom: 25px;
+}
+
+/* Buttons */
+.cta-button {
+    display: inline-block;
+    text-decoration: none;
+    background-color: #2f7ee6;
+    color: #fff;
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #155bb6bb;
+}
+
+.secondary-button {
+    background-color:#1a73e8dc;
+}
+
+.secondary-button:hover {
+    background-color: #155bb6c9;
+}
+
+.ap-button {
+    background-color: #1a73e8d5;
+    color: #e0e0e0;
+}
+
+.ap-button:hover {
+    background-color: #155bb6d0;
+}
+
