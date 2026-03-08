@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - E-Governance Council System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">🏛️ E-Governance Council</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html">Login</a></li>
+                <li><a href="register.html" class="active">Register</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Register Container -->
+    <div class="auth-container">
+        <div class="auth-card auth-card-large">
+            <h2>Create Your Account</h2>
+            <p class="auth-subtitle">Join our digital council platform</p>
+
+            <form id="registerForm" class="auth-form">
+                <!-- Personal Information -->
+                <div class="form-section">
+                    <h3>Personal Information</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" name="firstName" required placeholder="First name">
+                            <span class="error-message" id="firstNameError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" required placeholder="Last name">
+                            <span class="error-message" id="lastNameError"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nrc">National ID / NRC</label>
+                            <input type="text" id="nrc" name="nrc" required placeholder="Your National ID">
+                            <span class="error-message" id="nrcError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" required placeholder="+260 XXX XXX XXX">
+                            <span class="error-message" id="phoneError"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Account Information -->
+                <div class="form-section">
+                    <h3>Account Information</h3>
+                    
+                    <div class="form-group">
+                        <label for="regEmail">Email Address</label>
+                        <input type="email" id="regEmail" name="email" required placeholder="your.email@example.com">
+                        <span class="error-message" id="regEmailError"></span>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="regPassword">Password</label>
+                            <div class="password-field">
+                                <input type="password" id="regPassword" name="password" required placeholder="Min 8 characters">
+                                <button type="button" class="toggle-password" onclick="togglePassword('regPassword')">👁️</button>
+                            </div>
+                            <span class="error-message" id="regPasswordError"></span>
+                            <small>Must contain uppercase, lowercase, number, and special character</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <div class="password-field">
+                                <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm password">
+                                <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword')">👁️</button>
+                            </div>
+                            <span class="error-message" id="confirmPasswordError"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Address Information -->
+                <div class="form-section">
+                    <h3>Address Information</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="district">District</label>
+                            <input type="text" id="district" name="district" required placeholder="Your district">
+                            <span class="error-message" id="districtError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="province">Province</label>
+                            <input type="text" id="province" name="province" required placeholder="Your province">
+                            <span class="error-message" id="provinceError"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agreement -->
+                <div class="form-section">
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">I agree to the Terms of Service and Privacy Policy</label>
+                    </div>
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="newsletter" name="newsletter">
+                        <label for="newsletter">Subscribe to receive updates and notifications</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a href="index.html" class="link-primary">Login here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script -->
+    <script src="auth.js"></script>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if(validateRegisterForm()) {
+                handleRegister();
+            }
+        });
+
+        function validateRegisterForm() {
+            let isValid = true;
+
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const nrc = document.getElementById('nrc').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // First Name
+            if (!firstName || firstName.length < 2) {
+                document.getElementById('firstNameError').textContent = 'First name must be at least 2 characters';
+                isValid = false;
+            } else {
+                document.getElementById('firstNameError').textContent = '';
+            }
+
+            // Last Name
+            if (!lastName || lastName.length < 2) {
+                document.getElementById('lastNameError').textContent = 'Last name must be at least 2 characters';
+                isValid = false;
+            } else {
+                document.getElementById('lastNameError').textContent = '';
+            }
+
+            // NRC
+            if (!nrc || nrc.length < 5) {
+                document.getElementById('nrcError').textContent = 'Please enter a valid National ID';
+                isValid = false;
+            } else {
+                document.getElementById('nrcError').textContent = '';
+            }
+
+            // Phone
+            if (!phone || phone.length < 10) {
+                document.getElementById('phoneError').textContent = 'Please enter a valid phone number';
+                isValid = false;
+            } else {
+                document.getElementById('phoneError').textContent = '';
+            }
+
+            // Email
+            if (!email || !isValidEmail(email)) {
+                document.getElementById('regEmailError').textContent = 'Please enter a valid email';
+                isValid = false;
+            } else {
+                document.getElementById('regEmailError').textContent = '';
+            }
+
+            // Password
+            if (!password || password.length < 8) {
+                document.getElementById('regPasswordError').textContent = 'Password must be at least 8 characters';
+                isValid = false;
+            } else if (!isValidPassword(password)) {
+                document.getElementById('regPasswordError').textContent = 'Password must contain uppercase, lowercase, number, and special character';
+                isValid = false;
+            } else {
+                document.getElementById('regPasswordError').textContent = '';
+            }
+
+            // Confirm Password
+            if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').textContent = 'Passwords do not match';
+                isValid = false;
+            } else {
+                document.getElementById('confirmPasswordError').textContent = '';
+            }
+
+            return isValid;
+        }
+
+        async function handleRegister() {
+            console.log('Starting registration process...');
+
+            const userData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('regEmail').value,
+                password: document.getElementById('regPassword').value,
+                phone: document.getElementById('phone').value,
+                nationalId: document.getElementById('nrc').value,
+                district: document.getElementById('district').value,
+                province: document.getElementById('province').value
+            };
+
+            console.log('Collected user data:', userData);
+
+            // Show loading state
+            const submitBtn = document.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Registering...';
+            submitBtn.disabled = true;
+
+            try {
+                console.log('Calling registerUser API...');
+                const result = await registerUser(userData);
+                console.log('Registration API response:', result);
+
+                if (result.success) {
+                    alert('Registration successful! You are now logged in.');
+                    console.log('Registration successful, attempting auto-login...');
+                    // Automatically login the user after registration
+                    const loginResult = await loginUser(userData.email, userData.password);
+                    console.log('Auto-login result:', loginResult);
+                    if (loginResult.success) {
+                        storeUserSession(loginResult.user);
+                        // Redirect based on user role
+                        if (loginResult.user.role === 'Admin') {
+                            window.location.href = 'admin-panel.html';
+                        } else {
+                            window.location.href = 'dashboard.html';
+                        }
+                    } else {
+                        // If auto-login fails, redirect to login page
+                        console.error('Auto-login failed:', loginResult);
+                        window.location.href = 'index.html';
+                    }
+                } else {
+                    console.error('Registration failed:', result);
+                    alert('Registration failed: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                alert('An error occurred during registration. Please try again.');
+            } finally {
+                // Reset button state
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

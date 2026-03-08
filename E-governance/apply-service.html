@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Service - E-Governance Council System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-dark">
+        <div class="nav-container">
+            <div class="logo">🏛️ E-Governance Council</div>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="apply-service.html" class="active">Apply for Service</a></li>
+                <li class="nav-user">
+                    <span>👤 John Doe</span>
+                    <a href="index.html" onclick="logout()">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Application Form Container -->
+    <div class="application-container">
+        <div class="application-card">
+            <h1>Submit a Service Application</h1>
+            <p class="application-subtitle">Choose a service and fill in your details to apply</p>
+
+            <form id="applicationForm" class="application-form">
+                <!-- Service Selection -->
+                <div class="form-section">
+                    <h3>Select Service Type</h3>
+                    <div class="service-selection">
+                        <label class="service-option">
+                            <input type="radio" name="service" value="1" required>
+                            <div class="service-card">
+                                <h4>📋 Trading Permit</h4>
+                                <p>License to conduct business activities</p>
+                                <small>Processing time: 5 days | Fee: ZMW 250</small>
+                            </div>
+                        </label>
+                        <label class="service-option">
+                            <input type="radio" name="service" value="2">
+                            <div class="service-card">
+                                <h4>🏗️ Building Permit</h4>
+                                <p>Permission to construct buildings</p>
+                                <small>Processing time: 7 days | Fee: ZMW 500</small>
+                            </div>
+                        </label>
+                        <label class="service-option">
+                            <input type="radio" name="service" value="3">
+                            <div class="service-card">
+                                <h4>🎉 Event Permit</h4>
+                                <p>Authorization for public events</p>
+                                <small>Processing time: 3 days | Fee: ZMW 150</small>
+                            </div>
+                        </label>
+                        <label class="service-option">
+                            <input type="radio" name="service" value="4">
+                            <div class="service-card">
+                                <h4>💍 Marriage Certificate</h4>
+                                <p>Official marriage certificate</p>
+                                <small>Processing time: 2 days | Fee: ZMW 50</small>
+                            </div>
+                        </label>
+                        <label class="service-option">
+                            <input type="radio" name="service" value="5">
+                            <div class="service-card">
+                                <h4>🏢 Business Registration</h4>
+                                <p>Register your business entity</p>
+                                <small>Processing time: 4 days | Fee: ZMW 100</small>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Personal Information (Pre-filled from session) -->
+                <div class="form-section">
+                    <h3>Your Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" name="fullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="appEmail">Email</label>
+                            <input type="email" id="appEmail" name="email" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="appPhone">Phone</label>
+                            <input type="tel" id="appPhone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="appNRC">National ID</label>
+                            <input type="text" id="appNRC" name="nrc" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Application Details -->
+                <div class="form-section">
+                    <h3>Application Details</h3>
+                    <div class="form-group">
+                        <label for="description">Application Description</label>
+                        <textarea id="description" name="description" rows="4" placeholder="Provide details about your application" required></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="location">Location/Area</label>
+                            <input type="text" id="location" name="location" placeholder="Enter location details" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="appDate">Requested Start Date</label>
+                            <input type="date" id="appDate" name="requestedDate" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Document Upload -->
+                <div class="form-section">
+                    <h3>Required Documents</h3>
+                    <div class="documents-info">
+                        <p>Upload the following documents as per service requirements:</p>
+                        <ul id="requirementsList">
+                            <li>Identification document (copy)</li>
+                            <li>Proof of residence</li>
+                            <li>Service-specific documents</li>
+                        </ul>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="documents">Upload Documents</label>
+                        <div class="file-upload-area">
+                            <input type="file" id="documents" name="documents" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" required>
+                            <div class="upload-hint">
+                                <p>Drag and drop files here or click to select</p>
+                                <small>Supported: PDF, JPG, PNG, DOC (Max 5MB each)</small>
+                            </div>
+                        </div>
+                        <div id="uploadedFiles" class="uploaded-files"></div>
+                    </div>
+                </div>
+
+                <!-- Terms and Conditions -->
+                <div class="form-section">
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">I declare that the information provided is accurate and complete. I understand that providing false information may result in rejection of my application.</label>
+                    </div>
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="consent" name="consent" required>
+                        <label for="consent">I consent to the council's privacy policy and data processing terms</label>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="saveDraft()">Save as Draft</button>
+                    <button type="submit" class="btn btn-primary">Submit Application</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Requirements Sidebar -->
+        <aside class="requirements-sidebar">
+            <h3>📋 Service Requirements</h3>
+            <div id="serviceSummary" class="service-summary">
+                <p>Select a service to view requirements</p>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Script -->
+    <script src="auth.js"></script>
+    <script>
+        // Check authentication on page load
+        requireLogin();
+
+        // Update user information on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateUserInfo();
+        });
+
+        function updateUserInfo() {
+            const user = getUserSession();
+            if (user) {
+                // Update navigation user info
+                const navUserElement = document.querySelector('.nav-user span');
+                if (navUserElement) {
+                    navUserElement.textContent = `👤 ${user.name}`;
+                }
+
+                // Populate form fields from user session
+                const fullNameField = document.getElementById('fullName');
+                if (fullNameField) {
+                    fullNameField.value = user.name;
+                }
+
+                const emailField = document.getElementById('appEmail');
+                if (emailField) {
+                    emailField.value = user.email || '';
+                }
+
+                const phoneField = document.getElementById('appPhone');
+                if (phoneField) {
+                    phoneField.value = user.phone || '';
+                }
+
+                const nrcField = document.getElementById('appNRC');
+                if (nrcField) {
+                    nrcField.value = user.nrc || '';
+                }
+            }
+        }
+
+        const serviceDetails = {
+            '1': {
+                name: 'Trading Permit',
+                fee: 250,
+                days: 5,
+                requirements: [
+                    'Completed application form',
+                    'Business registration certificate',
+                    'National ID/Passport (copy)',
+                    'Proof of business address',
+                    'Tax clearance certificate'
+                ]
+            },
+            '2': {
+                name: 'Building Permit',
+                fee: 500,
+                days: 7,
+                requirements: [
+                    'Completed application form',
+                    'Plot/Property ownership document',
+                    'Architectural plans (2 copies)',
+                    'Environmental clearance',
+                    'Site inspection report'
+                ]
+            },
+            '3': {
+                name: 'Event Permit',
+                fee: 150,
+                days: 3,
+                requirements: [
+                    'Event details form',
+                    'Venue confirmation letter',
+                    'Security plan',
+                    'Insurance certificate',
+                    'Organizer identification'
+                ]
+            },
+            '4': {
+                name: 'Marriage Certificate',
+                fee: 50,
+                days: 2,
+                requirements: [
+                    'Birth certificates (both parties)',
+                    'Marriage registration document',
+                    'Identification documents',
+                    'Witness signatures',
+                    'Proof of residence'
+                ]
+            },
+            '5': {
+                name: 'Business Registration',
+                fee: 100,
+                days: 4,
+                requirements: [
+                    'Completed registration form',
+                    'Identification document',
+                    'Business plan summary',
+                    'Proof of address',
+                    'Declaration of ownership'
+                ]
+            }
+        };
+
+        // Set today's date as minimum
+        document.getElementById('appDate').min = new Date().toISOString().split('T')[0];
+
+        // Service selection change handler
+        document.querySelectorAll('input[name="service"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const service = serviceDetails[this.value];
+                const summary = document.getElementById('serviceSummary');
+                
+                let html = `<h4>${service.name}</h4>`;
+                html += `<div class="service-meta">
+                    <p><strong>Fee:</strong> ZMW ${service.fee}</p>
+                    <p><strong>Processing Time:</strong> ${service.days} days</p>
+                </div>`;
+                html += `<h5>Required Documents:</h5><ul>`;
+                
+                service.requirements.forEach(req => {
+                    html += `<li>✓ ${req}</li>`;
+                });
+                
+                html += `</ul>`;
+                summary.innerHTML = html;
+            });
+        });
+
+        // File upload handler with validation
+        const fileUpload = document.getElementById('documents');
+        const uploadedFilesList = document.getElementById('uploadedFiles');
+        const uploadArea = document.querySelector('.file-upload-area');
+        
+        const ALLOWED_TYPES = ['application/pdf', 'image/jpeg', 'image/png', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+        const ALLOWED_EXTENSIONS = ['pdf', 'jpg', 'jpeg', 'png', 'doc', 'docx'];
+        const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
+        function validateFile(file) {
+            // Check file size
+            if (file.size > MAX_FILE_SIZE) {
+                return { valid: false, error: `${file.name} exceeds 5MB limit (${(file.size / 1024 / 1024).toFixed(2)}MB)` };
+            }
+
+            // Check file type by MIME type
+            if (!ALLOWED_TYPES.includes(file.type)) {
+                const extension = file.name.split('.').pop().toLowerCase();
+                if (!ALLOWED_EXTENSIONS.includes(extension)) {
+                    return { valid: false, error: `${file.name} has unsupported format. Allowed: PDF, JPG, PNG, DOC, DOCX` };
+                }
+            }
+
+            return { valid: true };
+        }
+
+        function displayFiles(files) {
+            uploadedFilesList.innerHTML = '';
+            let hasErrors = false;
+
+            Array.from(files).forEach(file => {
+                const validation = validateFile(file);
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+
+                if (!validation.valid) {
+                    fileItem.style.opacity = '0.6';
+                    fileItem.innerHTML = `
+                        <span class="file-icon">❌</span>
+                        <span class="file-name" style="color: #d32f2f;">${validation.error}</span>
+                    `;
+                    hasErrors = true;
+                } else {
+                    fileItem.innerHTML = `
+                        <span class="file-icon">✅</span>
+                        <span class="file-name">${file.name}</span>
+                        <span class="file-size">${(file.size / 1024).toFixed(2)} KB</span>
+                    `;
+                }
+
+                uploadedFilesList.appendChild(fileItem);
+            });
+
+            if (hasErrors) {
+                const errorMsg = document.createElement('div');
+                errorMsg.style.cssText = 'color: #d32f2f; font-size: 0.9em; margin-top: 10px;';
+                errorMsg.textContent = '⚠️ Some files have errors and will not be uploaded.';
+                uploadedFilesList.appendChild(errorMsg);
+            }
+        }
+
+        // Click to upload
+        uploadArea.addEventListener('click', function() {
+            fileUpload.click();
+        });
+
+        // File input change
+        fileUpload.addEventListener('change', function() {
+            displayFiles(this.files);
+        });
+
+        // Drag and drop
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            uploadArea.style.background = '#e3f2fd';
+            uploadArea.style.borderColor = '#1976d2';
+        });
+
+        uploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            uploadArea.style.background = '#f8f9ff';
+            uploadArea.style.borderColor = 'var(--primary-color)';
+        });
+
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            uploadArea.style.background = '#f8f9ff';
+            uploadArea.style.borderColor = 'var(--primary-color)';
+            
+            fileUpload.files = e.dataTransfer.files;
+            displayFiles(e.dataTransfer.files);
+        });
+
+        // Form submission
+        document.getElementById('applicationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const serviceRadio = document.querySelector('input[name="service"]:checked');
+            if (!serviceRadio) {
+                alert('Please select a service');
+                return;
+            }
+
+            if (!document.getElementById('terms').checked || !document.getElementById('consent').checked) {
+                alert('Please accept the terms and conditions');
+                return;
+            }
+
+            // Validate files
+            const fileUpload = document.getElementById('documents');
+            if (fileUpload.files.length === 0) {
+                alert('Please upload at least one document');
+                return;
+            }
+
+            let hasInvalidFiles = false;
+            for (let file of fileUpload.files) {
+                const validation = validateFile(file);
+                if (!validation.valid) {
+                    hasInvalidFiles = true;
+                    break;
+                }
+            }
+
+            if (hasInvalidFiles) {
+                alert('Please remove invalid files before submitting');
+                return;
+            }
+
+            // Get current user
+            const user = getUserSession();
+            if (!user) {
+                alert('Please login first');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Create FormData instead of JSON to support file uploads
+            const formData = new FormData();
+            formData.append('action', 'submit_application');
+            formData.append('user_id', user.id);
+            formData.append('service_id', serviceRadio.value);
+            formData.append('fullName', document.getElementById('fullName').value);
+            formData.append('email', document.getElementById('appEmail').value);
+            formData.append('phone', document.getElementById('appPhone').value);
+            formData.append('nrc', document.getElementById('appNRC').value);
+            formData.append('description', document.getElementById('description').value);
+            formData.append('location', document.getElementById('location').value);
+            formData.append('requestedDate', document.getElementById('appDate').value);
+
+            // Add files to FormData
+            for (let file of fileUpload.files) {
+                formData.append('documents[]', file);
+            }
+
+            // Show loading state
+            const submitBtn = document.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Submitting...';
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch('application_api.php', {
+                    method: 'POST',
+                    body: formData
+                    // Don't set Content-Type header when using FormData - the browser will set it automatically
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Application submitted successfully!\\nReference Number: ' + result.app_reference + '\\n\\nYou will be redirected to the dashboard.');
+                    window.location.href = 'dashboard.html';
+                } else {
+                    alert('Error submitting application: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error submitting application:', error);
+                alert('An error occurred while submitting your application. Please try again.');
+            } finally {
+                // Reset button state
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Save draft
+        function saveDraft() {
+            alert('Application saved as draft. You can continue later from your dashboard.');
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                clearUserSession();
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+
+    <style>
+        .application-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 40px;
+        }
+
+        .application-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .application-card h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .application-subtitle {
+            color: var(--text-color);
+            margin-bottom: 30px;
+        }
+
+        .application-form {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .service-selection {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .service-option {
+            cursor: pointer;
+        }
+
+        .service-option input[type="radio"] {
+            display: none;
+        }
+
+        .service-card {
+            padding: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--light-color);
+            transition: var(--transition);
+        }
+
+        .service-option input[type="radio"]:checked + .service-card {
+            border-color: var(--primary-color);
+            background: #f0f4ff;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .service-card h4 {
+            margin-bottom: 8px;
+            color: var(--dark-color);
+        }
+
+        .service-card p {
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .service-card small {
+            color: #999;
+            font-size: 0.85em;
+        }
+
+        .file-upload-area {
+            border: 2px dashed var(--primary-color);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            background: #f8f9ff;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .file-upload-area:hover {
+            background: #f0f4ff;
+        }
+
+        .file-upload-area input[type="file"] {
+            display: none;
+        }
+
+        .upload-hint {
+            pointer-events: none;
+        }
+
+        .uploaded-files {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: var(--light-color);
+            border-radius: 6px;
+        }
+
+        .file-icon {
+            font-size: 1.5em;
+        }
+
+        .file-name {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .file-size {
+            color: #999;
+            font-size: 0.85em;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .requirements-sidebar {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            height: fit-content;
+        }
+
+        .requirements-sidebar h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .service-summary {
+            font-size: 0.95em;
+        }
+
+        .service-summary h4 {
+            color: var(--dark-color);
+            margin-bottom: 15px;
+        }
+
+        .service-meta {
+            background: var(--light-color);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .service-meta p {
+            margin: 5px 0;
+        }
+
+        .service-summary h5 {
+            margin: 15px 0 10px 0;
+            font-size: 0.95em;
+        }
+
+        .service-summary ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .service-summary li {
+            padding: 8px 0;
+            color: var(--text-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .application-container {
+                grid-template-columns: 1fr;
+            }
+
+            .application-card {
+                padding: 20px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .requirements-sidebar {
+                order: -1;
+            }
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - E-Governance Council System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">🏛️ E-Governance Council</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="login.html" class="active">Login</a></li>
+                <li><a href="register.html">Register</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Login Container -->
+    <div class="auth-container">
+        <div class="auth-card">
+            <h2>User Login</h2>
+            <p class="auth-subtitle">Access your account and manage your applications</p>
+
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email">
+                    <span class="error-message" id="emailError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="password-field">
+                        <input type="password" id="password" name="password" required placeholder="Enter your password">
+                        <button type="button" class="toggle-password" onclick="togglePassword('password')">👁️</button>
+                    </div>
+                    <span class="error-message" id="passwordError"></span>
+                </div>
+
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="remember" name="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full">Login</button>
+
+                <div class="auth-divider">or</div>
+
+                <a href="recover-password.html" class="btn btn-link">Forgot your password?</a>
+            </form>
+
+            <div class="auth-footer">
+                <p>Don't have an account? <a href="register.html" class="link-primary">Register here</a></p>
+            </div>
+        </div>
+
+        <!-- Info Card -->
+        <div class="info-card">
+            <h3>Demo Credentials</h3>
+            <div class="demo-creds">
+                <p><strong>Citizen:</strong></p>
+                <p>Email: citizen@example.com</p>
+                <p>Password: password123</p>
+            </div>
+            <div class="demo-creds">
+                <p><strong>Admin:</strong></p>
+                <p>Email: admin@council.gov</p>
+                <p>Password: admin123</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script -->
+    <script src="auth.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if(validateLoginForm()) {
+                handleLogin();
+            }
+        });
+
+        function validateLoginForm() {
+            let isValid = true;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email) {
+                document.getElementById('emailError').textContent = 'Email is required';
+                isValid = false;
+            } else if (!isValidEmail(email)) {
+                document.getElementById('emailError').textContent = 'Please enter a valid email';
+                isValid = false;
+            } else {
+                document.getElementById('emailError').textContent = '';
+            }
+
+            if (!password) {
+                document.getElementById('passwordError').textContent = 'Password is required';
+                isValid = false;
+            } else if (password.length < 6) {
+                document.getElementById('passwordError').textContent = 'Password must be at least 6 characters';
+                isValid = false;
+            } else {
+                document.getElementById('passwordError').textContent = '';
+            }
+
+            return isValid;
+        }
+
+        function handleLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Simulate login (in real app, send to backend)
+            console.log('Login attempt:', { email, password });
+            alert('Login successful! (This is a demo)');
+            
+            // Redirect based on user role (demo)
+            if (email.includes('admin')) {
+                window.location.href = 'admin-panel.html';
+            } else {
+                window.location.href = 'dashboard.html';
+            }
+        }
+    </script>
+</body>
+</html>

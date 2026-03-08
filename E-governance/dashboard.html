@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - E-Governance Council System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-dark">
+        <div class="nav-container">
+            <div class="logo">🏛️ E-Governance Council</div>
+            <ul class="nav-links">
+                <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="apply-service.html">Apply for Service</a></li>
+                <li class="nav-user">
+                    <span>👤 John Doe</span>
+                    <a href="index.html" onclick="logout()">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item active">📊 Dashboard</a>
+                <a href="apply-service.html" class="menu-item">📝 Apply for Service</a>
+                <a href="#applications" class="menu-item">📋 My Applications</a>
+                <a href="#notifications" class="menu-item">🔔 Notifications</a>
+                <a href="#documents" class="menu-item">📄 Documents</a>
+                <a href="#profile" class="menu-item">⚙️ Profile Settings</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <h1>Welcome back, <span id="userName">Guest</span>! 👋</h1>
+                <p>Here's an overview of your applications and activities</p>
+            </section>
+
+            <!-- Statistics Cards -->
+            <section class="stats-section">
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <h3>Total Applications</h3>
+                    <p class="stat-number" id="totalApps">-</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏳</div>
+                    <h3>Pending</h3>
+                    <p class="stat-number" id="pendingApps">-</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <h3>Approved</h3>
+                    <p class="stat-number" id="approvedApps">-</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">❌</div>
+                    <h3>Rejected</h3>
+                    <p class="stat-number" id="rejectedApps">-</p>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="quick-actions">
+                <h2>Quick Actions</h2>
+                <div class="action-buttons">
+                    <a href="apply-service.html" class="action-btn">
+                        <span class="action-icon">➕</span>
+                        <span>New Application</span>
+                    </a>
+                    <a href="#" class="action-btn" onclick="openDownloadDocumentsModal(event)">
+                        <span class="action-icon">📥</span>
+                        <span>Download Documents</span>
+                    </a>
+                    <a href="#" class="action-btn" onclick="openSendFeedbackModal(event)">
+                        <span class="action-icon">💬</span>
+                        <span>Send Feedback</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Recent Applications -->
+            <section class="applications-section" id="applications">
+                <h2>Recent Applications</h2>
+                <div class="table-responsive">
+                    <table class="applications-table">
+                        <thead>
+                            <tr>
+                                <th>Application ID</th>
+                                <th>Service Type</th>
+                                <th>Status</th>
+                                <th>Submitted</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="applicationsTableBody">
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 20px; color: #999;">Loading applications...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Notifications -->
+            <section class="notifications-section" id="notifications">
+                <h2>Recent Notifications</h2>
+                <div class="notifications-list" id="notificationsList">
+                    <div class="loading">Loading notifications...</div>
+                </div>
+            </section>
+
+            <!-- Download Documents Modal -->
+            <div id="downloadModal" class="modal" style="display: none;">
+                <div class="modal-content" style="max-width: 500px;">
+                    <div class="modal-header">
+                        <h2>Download Documents</h2>
+                        <button class="modal-close" onclick="closeDownloadDocumentsModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="downloadAppSelect">Select Application</label>
+                            <select id="downloadAppSelect" class="form-control">
+                                <option value="">-- Choose an application --</option>
+                            </select>
+                        </div>
+                        <div id="downloadDocList" style="display: none; margin-top: 20px;">
+                            <h3>Available Documents</h3>
+                            <div id="documentsList"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="closeDownloadDocumentsModal()">Close</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Send Feedback Modal -->
+            <div id="feedbackModal" class="modal" style="display: none;">
+                <div class="modal-content" style="max-width: 500px;">
+                    <div class="modal-header">
+                        <h2>Send Feedback</h2>
+                        <button class="modal-close" onclick="closeSendFeedbackModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="feedbackAppSelect">Application (Optional)</label>
+                            <select id="feedbackAppSelect" class="form-control">
+                                <option value="">-- General Feedback --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Your Rating</label>
+                            <div class="star-rating" id="starRating">
+                                <span class="star" data-value="1">⭐</span>
+                                <span class="star" data-value="2">⭐</span>
+                                <span class="star" data-value="3">⭐</span>
+                                <span class="star" data-value="4">⭐</span>
+                                <span class="star" data-value="5">⭐</span>
+                            </div>
+                            <input type="hidden" id="ratingValue" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="feedbackText">Your Feedback</label>
+                            <textarea id="feedbackText" class="form-control" rows="4" placeholder="Please share your feedback..." required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="closeSendFeedbackModal()">Cancel</button>
+                        <button class="btn btn-primary" onclick="submitFeedback()">Submit Feedback</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Script -->
+    <script src="auth.js"></script>
+    <script src="notifications.js"></script>
+    <script>
+        // Check authentication on page load
+        requireLogin();
+
+        // Update user information on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateUserInfo();
+        });
+
+        function updateUserInfo() {
+            const user = getUserSession();
+            if (user) {
+                // Update user name
+                const userNameElement = document.getElementById('userName');
+                if (userNameElement) {
+                    userNameElement.textContent = user.name;
+                }
+
+                // Update navigation user info
+                const navUserElement = document.querySelector('.nav-user span');
+                if (navUserElement) {
+                    navUserElement.textContent = `👤 ${user.name}`;
+                }
+
+                // Load application statistics
+                loadApplicationStatistics(user.id);
+                
+                // Load recent applications
+                loadApplications(user.id);
+                
+                // Load notifications (from external script)
+                loadNotifications(user.id);
+            }
+        }
+
+        async function loadApplicationStatistics(userId) {
+            try {
+                const response = await fetch('statistics_api.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action: 'get_statistics',
+                        user_id: userId
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Update statistics cards
+                    document.getElementById('totalApps').textContent = data.total_applications;
+                    document.getElementById('pendingApps').textContent = data.pending;
+                    document.getElementById('approvedApps').textContent = data.approved;
+                    document.getElementById('rejectedApps').textContent = data.rejected;
+                } else {
+                    console.error('Error fetching statistics:', data.message);
+                    // Keep default values
+                }
+            } catch (error) {
+                console.error('Error loading statistics:', error);
+                // Keep default values
+            }
+        }
+
+        async function loadApplications(userId) {
+            try {
+                const response = await fetch('application_api.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action: 'get_applications',
+                        user_id: userId,
+                        limit: 10
+                    })
+                });
+
+                const data = await response.json();
+                const applicationsTable = document.getElementById('applicationsTableBody');
+
+                if (data.success && data.applications.length > 0) {
+                    applicationsTable.innerHTML = '';
+                    data.applications.forEach(app => {
+                        // Map status to badge class
+                        let badgeClass = 'badge-pending';
+                        if (app.status === 'Approved') badgeClass = 'badge-approved';
+                        else if (app.status === 'Rejected') badgeClass = 'badge-rejected';
+                        else if (app.status === 'Under Review') badgeClass = 'badge-review';
+                        
+                        const row = `
+                            <tr>
+                                <td>${app.app_reference}</td>
+                                <td>${app.service_name}</td>
+                                <td><span class="badge ${badgeClass}">${app.status}</span></td>
+                                <td>${app.submission_date}</td>
+                                <td><a href="#" class="link-action" data-app-id="${app.app_id}" onclick="handleApplicationAction(event, ${app.app_id}, '${app.status}')">${app.action_label}</a></td>
+                            </tr>
+                        `;
+                        applicationsTable.innerHTML += row;
+                    });
+                } else {
+                    applicationsTable.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px; color: #999;">No applications found. <a href="apply-service.html">Start a new application</a></td></tr>';
+                }
+            } catch (error) {
+                console.error('Error loading applications:', error);
+                document.getElementById('applicationsTableBody').innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px; color: red;">Error loading applications</td></tr>';
+            }
+        }
+
+        function handleApplicationAction(event, appId, status) {
+            event.preventDefault();
+            if (status === 'Approved') {
+                // Handle download
+                alert('Download application #' + appId + ' - Document download would be triggered here');
+            } else {
+                // Handle view
+                alert('View application #' + appId + ' details');
+            }
+        }
+
+        // Download Documents Modal Functions
+        function openDownloadDocumentsModal(event) {
+            event.preventDefault();
+            const user = getUserSession();
+            if (!user) {
+                alert('Please log in first');
+                return;
+            }
+
+            // Populate applications dropdown
+            const select = document.getElementById('downloadAppSelect');
+            select.innerHTML = '<option value="">-- Choose an application --</option>';
+            
+            fetch('application_api.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'get_applications',
+                    user_id: user.id,
+                    limit: 100
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.applications) {
+                    data.applications.forEach(app => {
+                        const option = document.createElement('option');
+                        option.value = app.app_id;
+                        option.textContent = `${app.app_reference} - ${app.service_name}`;
+                        select.appendChild(option);
+                    });
+                }
+            })
+            .catch(err => console.error('Error loading applications:', err));
+
+            // Setup dropdown change handler
+            select.onchange = function() {
+                if (this.value) {
+                    loadDocumentsForDownload(user.id, this.value);
+                } else {
+                    document.getElementById('downloadDocList').style.display = 'none';
+                }
+            };
+
+            document.getElementById('downloadModal').style.display = 'block';
+        }
+
+        function closeDownloadDocumentsModal() {
+            document.getElementById('downloadModal').style.display = 'none';
+        }
+
+        async function loadDocumentsForDownload(userId, appId) {
+            try {
+                const response = await fetch('application_api.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'download_documents',
+                        user_id: userId,
+                        app_id: appId
+                    })
+                });
+
+                const data = await response.json();
+                const documentsList = document.getElementById('documentsList');
+
+                if (data.success && data.documents.length > 0) {
+                    documentsList.innerHTML = '';
+                    data.documents.forEach(doc => {
+                        const docDiv = document.createElement('div');
+                        docDiv.className = 'document-item';
+                        docDiv.style.padding = '10px';
+                        docDiv.style.marginBottom = '10px';
+                        docDiv.style.border = '1px solid #ddd';
+                        docDiv.style.borderRadius = '4px';
+                        docDiv.style.display = 'flex';
+                        docDiv.style.justifyContent = 'space-between';
+                        docDiv.style.alignItems = 'center';
+                        
+                        docDiv.innerHTML = `
+                            <div>
+                                <strong>${doc.original_name}</strong><br>
+                                <small style="color: #666;">Size: ${(doc.size / 1024).toFixed(2)} KB | Type: ${doc.type.toUpperCase()}</small>
+                            </div>
+                            <a href="${doc.download_url}" class="btn btn-primary" style="padding: 5px 15px; font-size: 12px;">Download</a>
+                        `;
+                        documentsList.appendChild(docDiv);
+                    });
+                    document.getElementById('downloadDocList').style.display = 'block';
+                } else {
+                    documentsList.innerHTML = '<p style="color: #666;">No documents available for this application.</p>';
+                    document.getElementById('downloadDocList').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error loading documents:', error);
+                alert('Failed to load documents. Please try again.');
+            }
+        }
+
+        // Send Feedback Modal Functions
+        function initStarRating() {
+            const stars = document.querySelectorAll('#starRating .star');
+            const ratingInput = document.getElementById('ratingValue');
+
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const rating = this.getAttribute('data-value');
+                    ratingInput.value = rating;
+
+                    // Update visual state
+                    stars.forEach(s => {
+                        const starValue = parseInt(s.getAttribute('data-value'));
+                        if (starValue <= rating) {
+                            s.classList.add('active');
+                            s.style.opacity = '1';
+                        } else {
+                            s.classList.remove('active');
+                            s.style.opacity = '0.5';
+                        }
+                    });
+                });
+
+                // Hover effect
+                star.addEventListener('mouseenter', function() {
+                    const rating = this.getAttribute('data-value');
+                    stars.forEach(s => {
+                        const starValue = parseInt(s.getAttribute('data-value'));
+                        if (starValue <= rating) {
+                            s.style.opacity = '1';
+                        } else {
+                            s.style.opacity = '0.5';
+                        }
+                    });
+                });
+            });
+
+            // Reset on mouse leave
+            document.getElementById('starRating').addEventListener('mouseleave', function() {
+                const currentRating = ratingInput.value;
+                stars.forEach(s => {
+                    const starValue = parseInt(s.getAttribute('data-value'));
+                    if (currentRating && starValue <= currentRating) {
+                        s.style.opacity = '1';
+                    } else {
+                        s.style.opacity = '0.5';
+                    }
+                });
+            });
+        }
+
+        // Send Feedback Modal Functions
+        function openSendFeedbackModal(event) {
+            event.preventDefault();
+            const user = getUserSession();
+            if (!user) {
+                alert('Please log in first');
+                return;
+            }
+
+            // Reset form
+            document.getElementById('feedbackAppSelect').value = '';
+            document.getElementById('feedbackText').value = '';
+            document.getElementById('ratingValue').value = '0';
+            document.querySelectorAll('#starRating .star').forEach(star => {
+                star.style.opacity = '0.5';
+            });
+
+            // Populate applications dropdown
+            const select = document.getElementById('feedbackAppSelect');
+            select.innerHTML = '<option value="">-- General Feedback --</option>';
+            
+            fetch('application_api.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'get_applications',
+                    user_id: user.id,
+                    limit: 100
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.applications) {
+                    data.applications.forEach(app => {
+                        const option = document.createElement('option');
+                        option.value = app.app_id;
+                        option.textContent = `${app.app_reference} - ${app.service_name}`;
+                        select.appendChild(option);
+                    });
+                }
+            })
+            .catch(err => console.error('Error loading applications:', err));
+
+            document.getElementById('feedbackModal').style.display = 'block';
+            
+            // Initialize star rating
+            initStarRating();
+        }
+
+        function closeSendFeedbackModal() {
+            document.getElementById('feedbackModal').style.display = 'none';
+        }
+
+        async function submitFeedback() {
+            const user = getUserSession();
+            if (!user) {
+                alert('Please log in first');
+                return;
+            }
+
+            const appId = parseInt(document.getElementById('feedbackAppSelect').value) || 0;
+            const feedback = document.getElementById('feedbackText').value.trim();
+            const rating = parseInt(document.getElementById('ratingValue').value) || 0;
+
+            if (!feedback) {
+                alert('Please enter your feedback');
+                return;
+            }
+
+            if (!rating) {
+                alert('Please select a rating');
+                return;
+            }
+
+            try {
+                const response = await fetch('application_api.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'send_feedback',
+                        user_id: user.id,
+                        app_id: appId,
+                        feedback: feedback,
+                        rating: rating
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Thank you! Your feedback has been submitted successfully.');
+                    closeSendFeedbackModal();
+                } else {
+                    alert('Error: ' + (data.message || 'Failed to submit feedback'));
+                }
+            } catch (error) {
+                console.error('Error submitting feedback:', error);
+                alert('An error occurred. Please try again.');
+            }
+        }
+
+
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                clearUserSession();
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

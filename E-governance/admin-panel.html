@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - E-Governance Council System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-dark">
+        <div class="nav-container">
+            <div class="logo">🏛️ E-Governance Council</div>
+            <ul class="nav-links">
+                <li><a href="admin-panel.html" class="active">Admin Dashboard</a></li>
+                <li class="nav-user">
+                    <span>👤 Admin Officer</span>
+                    <a href="index.html" onclick="logout()">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Admin Dashboard Container -->
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-menu">
+                <a href="admin-panel.html" class="menu-item active">📊 Dashboard</a>
+                <a href="#applications" class="menu-item">📋 Applications</a>
+                <a href="#users" class="menu-item">👥 Users</a>
+                <a href="#services" class="menu-item">🎯 Services</a>
+                <a href="#documents" class="menu-item">📄 Documents</a>
+                <a href="#reports" class="menu-item">📈 Reports</a>
+                <a href="#settings" class="menu-item">⚙️ Settings</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Welcome Section -->
+            <section class="admin-welcome">
+                <h1>Admin Dashboard</h1>
+                <p>Manage applications, users, and system operations</p>
+            </section>
+
+            <!-- Statistics Cards -->
+            <section class="admin-stats">
+                <div class="admin-stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-content">
+                        <h3>Total Applications</h3>
+                        <p class="stat-big" id="totalApps">-</p>
+                        <small id="newAppsWeek">Loading...</small>
+                    </div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="stat-icon">⏳</div>
+                    <div class="stat-content">
+                        <h3>Pending Review</h3>
+                        <p class="stat-big" id="pendingApps">-</p>
+                        <small>Requires action</small>
+                    </div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-content">
+                        <h3>Approved Today</h3>
+                        <p class="stat-big" id="approvedToday">-</p>
+                        <small id="reviewedToday">Out of - reviewed</small>
+                    </div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-content">
+                        <h3>Total Users</h3>
+                        <p class="stat-big" id="totalUsers">-</p>
+                        <small id="newUsersWeek">+0 new users</small>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Application Management -->
+            <section class="admin-section" id="applications">
+                <div class="section-header">
+                    <h2>Pending Applications for Review</h2>
+                    <a href="#" class="btn btn-secondary">Export</a>
+                </div>
+
+                <div class="filter-bar">
+                    <select class="filter-select">
+                        <option>All Services</option>
+                        <option>Trading Permit</option>
+                        <option>Building Permit</option>
+                        <option>Marriage Certificate</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>All Statuses</option>
+                        <option>Pending</option>
+                        <option>Under Review</option>
+                        <option>Awaiting Documents</option>
+                    </select>
+                    <input type="search" class="filter-search" placeholder="Search by application ID or user">
+                </div>
+
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>App ID</th>
+                                <th>Applicant</th>
+                                <th>Service</th>
+                                <th>Submitted</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="applicationsTableBody">
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 20px; color: #999;">Loading applications...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- System Overview -->
+            <section class="admin-section">
+                <h2>System Overview</h2>
+                <div class="overview-cards">
+                    <div class="overview-card">
+                        <h3>Application Success Rate</h3>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="successRateBar" style="width: 0%"></div>
+                        </div>
+                        <p id="successRateText">Loading...</p>
+                    </div>
+                    <div class="overview-card">
+                        <h3>Average Processing Time</h3>
+                        <p class="big-stat" id="avgProcessingTime">Loading...</p>
+                        <small>Target: 5 days</small>
+                    </div>
+                    <div class="overview-card">
+                        <h3>System Uptime</h3>
+                        <p class="big-stat">99.8%</p>
+                        <small>Last 30 days</small>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Script -->
+    <script src="auth.js"></script>
+    <script>
+        // Check authentication on page load
+        requireLogin();
+
+        // Update user information and load data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateUserInfo();
+            loadAdminStatistics();
+            loadPendingApplications();
+        });
+
+        function updateUserInfo() {
+            const user = getUserSession();
+            if (user && user.role === 'Admin') {
+                // Update navigation user info
+                const navUserElement = document.querySelector('.nav-user span');
+                if (navUserElement) {
+                    navUserElement.textContent = `👤 ${user.name}`;
+                }
+            } else {
+                // Redirect if not admin
+                alert('Access denied. Admin privileges required.');
+                window.location.href = 'index.html';
+            }
+        }
+
+        async function loadAdminStatistics() {
+            try {
+                const response = await fetch('admin_api.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action: 'get_admin_statistics'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    const stats = data.statistics;
+
+                    // Update statistics cards
+                    document.getElementById('totalApps').textContent = stats.total_applications;
+                    document.getElementById('newAppsWeek').textContent = `+${stats.new_applications_week} this week`;
+                    document.getElementById('pendingApps').textContent = stats.pending_applications;
+                    document.getElementById('approvedToday').textContent = stats.approved_today;
+                    document.getElementById('reviewedToday').textContent = `Out of ${stats.reviewed_today} reviewed`;
+                    document.getElementById('totalUsers').textContent = stats.total_users;
+                    document.getElementById('newUsersWeek').textContent = `+${stats.new_users_week} new users`;
+
+                    // Update system overview
+                    updateSystemOverview(stats);
+                } else {
+                    console.error('Error loading statistics:', data.message);
+                    showErrorMessage('Failed to load statistics');
+                }
+            } catch (error) {
+                console.error('Error loading admin statistics:', error);
+                showErrorMessage('Failed to load statistics');
+            }
+        }
+
+        function updateSystemOverview(stats) {
+            // Update success rate
+            const successRateElement = document.querySelector('.overview-card:nth-child(1) .progress-fill');
+            const successRateText = document.querySelector('.overview-card:nth-child(1) p');
+            if (successRateElement && successRateText) {
+                successRateElement.style.width = `${stats.success_rate}%`;
+                successRateText.textContent = `${stats.success_rate}% approved out of ${stats.total_applications} total`;
+            }
+
+            // Update processing time
+            const processingTimeElement = document.querySelector('.overview-card:nth-child(2) .big-stat');
+            if (processingTimeElement) {
+                processingTimeElement.textContent = `${stats.avg_processing_days} days`;
+            }
+        }
+
+        async function loadPendingApplications() {
+            try {
+                const response = await fetch('admin_api.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action: 'get_pending_applications',
+                        limit: 50
+                    })
+                });
+
+                const data = await response.json();
+                const tableBody = document.getElementById('applicationsTableBody');
+
+                if (data.success && data.applications.length > 0) {
+                    tableBody.innerHTML = '';
+                    data.applications.forEach(app => {
+                        // Map status to badge class
+                        let badgeClass = 'badge-pending';
+                        if (app.status === 'Under Review') badgeClass = 'badge-review';
+
+                        const row = `
+                            <tr>
+                                <td>${app.app_reference}</td>
+                                <td>${app.applicant_name}<br><small style="color: #666;">${app.email}</small></td>
+                                <td>${app.service_name}</td>
+                                <td>${new Date(app.submission_date).toLocaleDateString()}</td>
+                                <td><span class="badge ${badgeClass}">${app.status}</span></td>
+                                <td>
+                                    <button class="btn-action btn-view" onclick="viewApplication(${app.app_id})">Review</button>
+                                    <button class="btn-action btn-approve" onclick="approveApplication(${app.app_id})">Approve</button>
+                                    <button class="btn-action btn-reject" onclick="rejectApplication(${app.app_id})">Reject</button>
+                                </td>
+                            </tr>
+                        `;
+                        tableBody.innerHTML += row;
+                    });
+                } else {
+                    tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #999;">No pending applications found.</td></tr>';
+                }
+            } catch (error) {
+                console.error('Error loading applications:', error);
+                document.getElementById('applicationsTableBody').innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: red;">Error loading applications</td></tr>';
+            }
+        }
+
+        async function approveApplication(appId) {
+            if (!confirm('Are you sure you want to approve this application?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch('admin_api.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action: 'approve_application',
+                        app_id: appId
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Application approved successfully!');
+                    // Reload data
+                    loadAdminStatistics();
+                    loadPendingApplications();
+                } else {
+                    alert('Error: ' + (data.message || 'Failed to approve application'));
+                }
+            } catch (error) {
+                console.error('Error approving application:', error);
+                alert('An error occurred. Please try again.');
+            }
+        }
+
+        async function rejectApplication(appId) {
+            const reason = prompt('Please provide a reason for rejection:');
+            if (reason === null || reason.trim() === '') {
+                return;
+            }
+
+            try {
+                const response = await fetch('admin_api.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action: 'reject_application',
+                        app_id: appId,
+                        reason: reason.trim()
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Application rejected successfully!');
+                    // Reload data
+                    loadAdminStatistics();
+                    loadPendingApplications();
+                } else {
+                    alert('Error: ' + (data.message || 'Failed to reject application'));
+                }
+            } catch (error) {
+                console.error('Error rejecting application:', error);
+                alert('An error occurred. Please try again.');
+            }
+        }
+
+        function viewApplication(appId) {
+            // For now, just show an alert. You can expand this to show detailed application view
+            alert(`Viewing application details for ID: ${appId}\n\nThis feature can be expanded to show full application details, documents, and review interface.`);
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                clearUserSession();
+                window.location.href = 'index.html';
+            }
+        }
+
+        function showErrorMessage(message) {
+            // Update all loading placeholders with error message
+            const elements = ['totalApps', 'pendingApps', 'approvedToday', 'totalUsers'];
+            elements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = 'Error';
+                    element.style.color = 'red';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
